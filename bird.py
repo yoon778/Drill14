@@ -24,10 +24,10 @@ FRAMES = [
 
 
 class Bird:
-    def __init__(self, image, x, y):
+    def __init__(self, image, x, y, start_frame):
         self.image = image
         self.x, self.y = x, y
-        self.frame = 0.0
+        self.frame = start_frame
 
     def update(self):
         self.frame = (self.frame + FLAP_FRAMES_PER_SECOND * game_framework.frame_time) % len(FRAMES)
@@ -60,7 +60,10 @@ class Flock:
         margin = 50
         self.left = margin - min(x for x, _ in FORMATION)
         self.right = get_canvas_width() - margin - max(x for x, _ in FORMATION)
-        self.birds = [Bird(image, x, y) for x, y in FORMATION]
+        self.birds = [
+            Bird(image, x, y, index * len(FRAMES) / len(FORMATION))
+            for index, (x, y) in enumerate(FORMATION)
+        ]
 
     def update(self):
         span = self.right - self.left
