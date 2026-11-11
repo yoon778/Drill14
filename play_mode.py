@@ -2,10 +2,11 @@ from pico2d import SDL_KEYDOWN, SDL_QUIT, SDLK_ESCAPE, clear_canvas, get_events,
 
 import game_framework
 import game_world
+from grass import Grass
 
 
 def init():
-    pass
+    game_world.add_oject(Grass(), 0)
 
 
 def finish():
