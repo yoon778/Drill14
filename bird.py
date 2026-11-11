@@ -27,9 +27,24 @@ class Bird:
     def update(self):
         self.frame = (self.frame + FLAP_FRAMES_PER_SECOND * game_framework.frame_time) % len(FRAMES)
 
-    def draw(self):
+    def draw(self, center_x, center_y):
         left, bottom, width, height, offset_x, offset_y = FRAMES[int(self.frame)]
         self.image.clip_draw(left, bottom, width, height,
-                             self.x + offset_x * BIRD_SCALE,
-                             self.y + offset_y * BIRD_SCALE,
+                             center_x + self.x + offset_x * BIRD_SCALE,
+                             center_y + self.y + offset_y * BIRD_SCALE,
                              round(width * BIRD_SCALE), round(height * BIRD_SCALE))
+
+
+
+class Flock:
+    def __init__(self, image):
+        self.x, self.y = 650.0, 330.0
+        self.birds = [Bird(image, 0, 0)]
+
+    def update(self):
+        for bird in self.birds:
+            bird.update()
+
+    def draw(self):
+        for bird in self.birds:
+            bird.draw(self.x, self.y)

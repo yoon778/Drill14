@@ -2,14 +2,14 @@ from pico2d import SDL_KEYDOWN, SDL_QUIT, SDLK_ESCAPE, clear_canvas, get_events,
 
 import game_framework
 import game_world
-from bird import Bird
+from bird import Flock
 from grass import Grass
 
 
 def init():
     game_world.add_oject(Grass(), 0)
     image = load_image('bird_animation.png')
-    game_world.add_oject(Bird(image, 650, 330))
+    game_world.add_oject(Flock(image))
 
 
 def finish():
