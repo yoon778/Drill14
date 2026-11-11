@@ -1,0 +1,31 @@
+from pico2d import SDL_KEYDOWN, SDL_QUIT, SDLK_ESCAPE, clear_canvas, get_events, update_canvas
+
+import game_framework
+import game_world
+
+
+def init():
+    pass
+
+
+def finish():
+    game_world.clear()
+
+
+def handle_events():
+    for event in get_events():
+        if event.type == SDL_QUIT or (
+            event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE
+        ):
+            game_framework.quit()
+            return
+
+
+def update():
+    game_world.update()
+
+
+def render():
+    clear_canvas()
+    game_world.render()
+    update_canvas()
