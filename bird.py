@@ -5,13 +5,15 @@ BIRD_SCALE = 0.45
 FLAP_FRAMES_PER_SECOND = 20.0
 SHEET_HEIGHT = 506
 COLUMNS = (0, 182, 364, 546, 727, 918)
-ROWS = ((0, 164, 5), (164, 350, 5), (350, 506, 4))
+ROWS = ((0, 164, 103, 5), (164, 350, 267, 5), (350, 506, 440, 4))
 
 # 원본의 위쪽 기준 행을 Pico2D의 아래쪽 기준으로 변환한다.
 FRAMES = [
     (COLUMNS[column], SHEET_HEIGHT - bottom,
-     COLUMNS[column + 1] - COLUMNS[column], bottom - top)
-    for top, bottom, count in ROWS
+     COLUMNS[column + 1] - COLUMNS[column], bottom - top,
+     (COLUMNS[column] + COLUMNS[column + 1]) / 2 - (182 * column + 105),
+     body_y - (top + bottom) / 2)
+    for top, bottom, body_y, count in ROWS
     for column in range(count)
 ]
 
@@ -26,6 +28,8 @@ class Bird:
         self.frame = (self.frame + FLAP_FRAMES_PER_SECOND * game_framework.frame_time) % len(FRAMES)
 
     def draw(self):
-        left, bottom, width, height = FRAMES[int(self.frame)]
-        self.image.clip_draw(left, bottom, width, height, self.x, self.y,
+        left, bottom, width, height, offset_x, offset_y = FRAMES[int(self.frame)]
+        self.image.clip_draw(left, bottom, width, height,
+                             self.x + offset_x * BIRD_SCALE,
+                             self.y + offset_y * BIRD_SCALE,
                              round(width * BIRD_SCALE), round(height * BIRD_SCALE))
