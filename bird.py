@@ -1,4 +1,8 @@
+import game_framework
+
+
 BIRD_SCALE = 0.45
+FLAP_FRAMES_PER_SECOND = 20.0
 SHEET_HEIGHT = 506
 COLUMNS = (0, 182, 364, 546, 727, 918)
 ROWS = ((0, 164, 5), (164, 350, 5), (350, 506, 4))
@@ -19,7 +23,7 @@ class Bird:
         self.frame = 0.0
 
     def update(self):
-        pass
+        self.frame = (self.frame + FLAP_FRAMES_PER_SECOND * game_framework.frame_time) % len(FRAMES)
 
     def draw(self):
         left, bottom, width, height = FRAMES[int(self.frame)]
