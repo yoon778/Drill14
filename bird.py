@@ -32,12 +32,15 @@ class Bird:
     def update(self):
         self.frame = (self.frame + FLAP_FRAMES_PER_SECOND * game_framework.frame_time) % len(FRAMES)
 
-    def draw(self, center_x, center_y):
+    def draw(self, center_x, center_y, direction):
         left, bottom, width, height, offset_x, offset_y = FRAMES[int(self.frame)]
-        self.image.clip_draw(left, bottom, width, height,
-                             center_x + self.x + offset_x * BIRD_SCALE,
-                             center_y + self.y + offset_y * BIRD_SCALE,
-                             round(width * BIRD_SCALE), round(height * BIRD_SCALE))
+        flip = '' if direction == 1 else 'h'
+        self.image.clip_composite_draw(
+            left, bottom, width, height, 0, flip,
+            center_x + self.x + direction * offset_x * BIRD_SCALE,
+            center_y + self.y + offset_y * BIRD_SCALE,
+            round(width * BIRD_SCALE), round(height * BIRD_SCALE),
+        )
 
 
 
@@ -78,4 +81,4 @@ class Flock:
 
     def draw(self):
         for bird in self.birds:
-            bird.draw(self.x, self.y)
+            bird.draw(self.x, self.y, self.direction)
