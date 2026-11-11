@@ -3,6 +3,9 @@ import game_framework
 
 BIRD_SCALE = 0.45
 FLAP_FRAMES_PER_SECOND = 20.0
+PIXEL_PER_METER = 10.0 / 0.3
+FLIGHT_SPEED_KMPH = 24.0
+FLIGHT_SPEED_PPS = FLIGHT_SPEED_KMPH * 1000 / 3600 * PIXEL_PER_METER
 SHEET_HEIGHT = 506
 COLUMNS = (0, 182, 364, 546, 727, 918)
 ROWS = ((0, 164, 103, 5), (164, 350, 267, 5), (350, 506, 440, 4))
@@ -51,6 +54,7 @@ class Flock:
         self.birds = [Bird(image, x, y) for x, y in FORMATION]
 
     def update(self):
+        self.x += FLIGHT_SPEED_PPS * game_framework.frame_time
         for bird in self.birds:
             bird.update()
 
