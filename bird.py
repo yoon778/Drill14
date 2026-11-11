@@ -1,3 +1,5 @@
+from pico2d import get_canvas_width
+
 import game_framework
 
 
@@ -51,10 +53,26 @@ FORMATION = (
 class Flock:
     def __init__(self, image):
         self.x, self.y = 650.0, 330.0
+        self.direction = 1
+        margin = 50
+        self.left = margin - min(x for x, _ in FORMATION)
+        self.right = get_canvas_width() - margin - max(x for x, _ in FORMATION)
         self.birds = [Bird(image, x, y) for x, y in FORMATION]
 
     def update(self):
-        self.x += FLIGHT_SPEED_PPS * game_framework.frame_time
+        span = self.right - self.left
+        progress = self.x - self.left
+        if self.direction == -1:
+            progress = 2 * span - progress
+
+        # 한 왕복 거리로 나누면 경계까지 가고 남은 이동 거리도 반영된다.
+        progress = (progress + FLIGHT_SPEED_PPS * game_framework.frame_time) % (2 * span)
+        if progress < span:
+            self.x = self.left + progress
+            self.direction = 1
+        else:
+            self.x = self.right - (progress - span)
+            self.direction = -1
         for bird in self.birds:
             bird.update()
 
