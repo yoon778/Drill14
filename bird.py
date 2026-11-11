@@ -36,10 +36,19 @@ class Bird:
 
 
 
+FORMATION = (
+    (0, 0),
+    (-85, 45), (-85, -45),
+    (-170, 90), (-170, -90),
+    (-255, 135), (-255, -135),
+    (-340, 175), (-340, 0), (-340, -175),
+)
+
+
 class Flock:
     def __init__(self, image):
         self.x, self.y = 650.0, 330.0
-        self.birds = [Bird(image, 0, 0)]
+        self.birds = [Bird(image, x, y) for x, y in FORMATION]
 
     def update(self):
         for bird in self.birds:
